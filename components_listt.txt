@@ -1,0 +1,12 @@
+Hardware Components:
+- Arduino Uno (or compatible microcontroller)
+- LM35 Temperature Sensor
+- Small DC Fan
+- Relay Module
+- Jumper Wires
+- Breadboard (optional)
+- USB Cable for power & Serial Monitor
+
+Software:
+- Arduino IDE
+- Embedded C

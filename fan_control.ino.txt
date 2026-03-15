@@ -1,0 +1,37 @@
+// Smart Home Fan Control using LM35 Temperature Sensor
+// Fan speed controlled automatically using PWM based on temperature
+
+int tempPin = A0;      // LM35 analog output connected to A0
+int fanPin = 9;        // PWM pin connected to L293D / Relay for fan
+float temperature;
+int fanSpeed;
+
+void setup() {
+  Serial.begin(9600);  // Start serial communication
+  pinMode(fanPin, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = analogRead(tempPin);           // Read analog value (0-1023)
+  float voltage = sensorValue * (5.0 / 1023.0);   // Convert to voltage
+  temperature = voltage * 100;                     // LM35: 10 mV per °C
+
+  // Map temperature to fan speed (0-255 PWM)
+  if (temperature < 25) {
+    fanSpeed = 0;  // Fan OFF
+  } else if (temperature >= 25 && temperature <= 35) {
+    fanSpeed = map(temperature, 25, 35, 100, 255); // Gradually increase speed
+  } else {
+    fanSpeed = 255; // Max speed
+  }
+
+  analogWrite(fanPin, fanSpeed);
+
+  // Print temperature and fan speed
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C  |  Fan Speed (PWM): ");
+  Serial.println(fanSpeed);
+
+  delay(1000);  // Read every 1 second
+}
